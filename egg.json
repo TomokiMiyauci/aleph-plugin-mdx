@@ -1,0 +1,22 @@
+{
+  "$schema": "https://x.nest.land/eggs@0.3.10/src/schema.json",
+  "name": "aleph_plugin_mdx",
+  "entry": "./mod.ts",
+  "description": "The MDX 2 Plugin for Aleph.js",
+  "homepage": "https://github.com/TomokiMiyauci/aleph-plugin-mdx",
+  "files": [
+    "./**/*.ts",
+    "./**/*.md"
+  ],
+  "version": "v1.0.0-beta.1",
+  "ignore": [
+    ".git",
+    "./_docs/**/*",
+    "./node_modules/**/*",
+    "package.json",
+    "pnpm-lock.yaml"
+  ],
+  "check": false,
+  "yes": true,
+  "unlisted": false
+}
