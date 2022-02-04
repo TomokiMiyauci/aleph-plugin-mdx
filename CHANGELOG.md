@@ -1,3 +1,10 @@
+# [1.0.0-beta.4](https://github.com/TomokiMiyauci/aleph-plugin-mdx/compare/v1.0.0-beta.3...v1.0.0-beta.4) (2022-02-04)
+
+
+### Features
+
+* update xdm to `1.9.1` ([ed487ba](https://github.com/TomokiMiyauci/aleph-plugin-mdx/commit/ed487ba2effebf8390f8f877476af5dfee3939fc))
+
 # [1.0.0-beta.3](https://github.com/TomokiMiyauci/aleph-plugin-mdx/compare/v1.0.0-beta.2...v1.0.0-beta.3) (2022-02-04)
 
 
