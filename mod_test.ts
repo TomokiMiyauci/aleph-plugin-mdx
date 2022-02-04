@@ -21,7 +21,7 @@ test("mdxResolver", () => {
 
   expect(
     mdxResolver("/pages/get_started.mdx", {
-      rewritePath: (path) => path.replaceAll("_", "-"),
+      rewritePagePath: (path) => path.replaceAll("_", "-"),
     }),
   ).toEqual({
     asPage: { path: "/get-started", isIndex: false },
@@ -45,6 +45,74 @@ test("mdxLoader", async () => {
     mdxLoader(
       { specifier: "/pages/docs/index.mdx" },
       aleph,
+    ),
+  ).resolves.toEqual({
+    code: `/*@jsxRuntime automatic @jsxImportSource react*/
+import {Fragment as _Fragment, jsx as _jsx, jsxs as _jsxs} from "react/jsx-runtime";
+function MDXContent(_props) {
+  const _components = Object.assign({
+    h1: "h1",
+    p: "p"
+  }, _props.components), {wrapper: MDXLayout} = _components;
+  const _content = _jsxs(_Fragment, {
+    children: [_jsx(_components.h1, {
+      children: "aleph-plugin-mdx"
+    }), "\\n", _jsx(_components.p, {
+      children: "Aleph plugin for mdx v2"
+    })]
+  });
+  return MDXLayout ? _jsx(MDXLayout, Object.assign({}, _props, {
+    children: _content
+  })) : _content;
+}
+export default MDXContent;
+`,
+  });
+
+  await expect(
+    mdxLoader(
+      { specifier: "/pages/docs/index.mdx" },
+      aleph,
+      { pageProps: { meta: { title: "hello" }, nav: [{ path: "/" }] } },
+    ),
+  ).resolves.toEqual({
+    code: `/*@jsxRuntime automatic @jsxImportSource react*/
+import {Fragment as _Fragment, jsx as _jsx, jsxs as _jsxs} from "react/jsx-runtime";
+function MDXContent(_props) {
+  const _components = Object.assign({
+    h1: "h1",
+    p: "p"
+  }, _props.components), {wrapper: MDXLayout} = _components;
+  const _content = _jsxs(_Fragment, {
+    children: [_jsx(_components.h1, {
+      children: "aleph-plugin-mdx"
+    }), "\\n", _jsx(_components.p, {
+      children: "Aleph plugin for mdx v2"
+    })]
+  });
+  return MDXLayout ? _jsx(MDXLayout, Object.assign({}, _props, {
+    children: _content
+  })) : _content;
+}
+export default MDXContent;
+
+MDXContent.meta = {"title":"hello"};
+MDXContent.nav = [{"path":"/"}];`,
+  });
+
+  await ensureTextFile(
+    join(dir, "/components/hello.mdx"),
+    [
+      "# aleph-plugin-mdx",
+      "Aleph plugin for mdx v2",
+    ].join("\n"),
+  );
+
+  await expect(
+    mdxLoader(
+      { specifier: "/components/hello.mdx" },
+      aleph,
+      { pageProps: { meta: { title: "hello" }, nav: [{ path: "/" }] } },
     ),
   ).resolves.toEqual({
     code: `/*@jsxRuntime automatic @jsxImportSource react*/

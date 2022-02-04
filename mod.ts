@@ -9,24 +9,45 @@ import {
 } from "./deps.ts";
 
 export type CompileOptions = Parameters<typeof compile>[1];
-export type Options =
+
+export type ResolverOptions = {
+  /** Rewrite the page path
+   * ```ts
+   * import mdx from "https://deno.land/x/aleph_plugin_mdx@$VERSION/mod.ts";
+   * import type { Config } from "https://deno.land/x/aleph@v0.3.0-beta.19/types.d.ts";
+   * export default <Config> {
+   *   plugins: [mdx({
+   *     rewritePagePath(path) {
+   *       return path.replaceAll("_", "-");
+   *     },
+   *   })],
+   * };
+   * ```
+   */
+  rewritePagePath: (path: string) => string | undefined;
+};
+
+export type LoaderOptions =
   & CompileOptions
   & Partial<{
-    /** Rewrite the page path
+    /** Define props to page components.
      * ```ts
      * import mdx from "https://deno.land/x/aleph_plugin_mdx@$VERSION/mod.ts";
-     * import type { Config } from "https://deno.land/x/";
+     * import type { Config } from "https://deno.land/x/aleph@v0.3.0-beta.19/types.d.ts";
      * export default <Config> {
-     *   plugins: [mdx({
-     *     rewritePagePath(path) {
-     *       return path.replaceAll("_", "-");
-     *     },
-     *   })],
+     *   plugins: [
+     *     mdx({
+     *       pageProps: { nav: [{ path: "/" }, { path: "/docs" }] },
+     *     }),
+     *   ],
      * };
      * ```
      */
-    rewritePagePath: (path: string) => string | undefined;
+    pageProps: Record<string | number, unknown>;
   }>;
+export type Options =
+  & LoaderOptions
+  & Partial<ResolverOptions>;
 
 const pattern = /\.(mdx)$/i;
 const INDEX_PATH = "/index";
@@ -35,7 +56,7 @@ const NAME = "mdx-loader";
 
 export function mdxResolver(
   specifier: string,
-  options?: { rewritePath: Options["rewritePagePath"] },
+  options?: Partial<ResolverOptions>,
 ): ResolveResult {
   const pagePath = util.trimPrefix(
     specifier.replace(pattern, ""),
@@ -49,7 +70,7 @@ export function mdxResolver(
     })()
     : pagePath;
 
-  const _path = options?.rewritePath?.(path) ?? path;
+  const _path = options?.rewritePagePath?.(path) ?? path;
   return {
     asPage: { path: _path, isIndex },
   };
@@ -58,7 +79,7 @@ export function mdxResolver(
 export async function mdxLoader(
   { specifier }: LoadInput,
   aleph: Aleph,
-  options?: CompileOptions,
+  options?: LoaderOptions,
 ): Promise<LoadOutput> {
   const { content } = await aleph.fetchModule(specifier);
   const { framework } = aleph.config;
@@ -72,10 +93,16 @@ export async function mdxLoader(
     );
   }
 
+  const isPage = specifier.startsWith(PAGES_PATH);
+  const props = Object.entries(isPage ? options?.pageProps ?? {} : {}).map((
+    [key, value],
+  ) => `MDXContent.${key} = ${JSON.stringify(value)};`);
+
   return {
     code: [
       contents.toString(),
-    ].join("\n"),
+      ...props,
+    ].filter(Boolean).join("\n"),
   };
 }
 
@@ -97,7 +124,7 @@ export default function (options?: Options): Plugin {
       aleph.onResolve(
         /\/pages\/(.+)\.mdx$/i,
         (specifier) =>
-          mdxResolver(specifier, { rewritePath: options?.rewritePagePath }),
+          mdxResolver(specifier, { rewritePagePath: options?.rewritePagePath }),
       );
       aleph.onLoad(pattern, (input) => mdxLoader(input, aleph, options));
     },

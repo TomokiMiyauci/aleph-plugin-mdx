@@ -1,5 +1,8 @@
 # aleph-plugin-mdx
 
+[![deno land](http://img.shields.io/badge/available%20on-deno.land/x-lightgrey.svg?logo=deno&labelColor=black&color=black)](https://deno.land/x/aleph_plugin_mdx)
+[![nest.land](https://nest.land/badge.svg)](https://nest.land/package/aleph_plugin_mdx)
+
 [MDX 2](https://mdxjs.com/) plugin for Aleph.js
 
 ## Usage
@@ -47,6 +50,11 @@ use that.
 
 :construction: This process may be automated in the future.
 
+## Examples
+
+- [_example](./_example/README.md)
+- [mapcss Docs](https://github.com/TomokiMiyauci/mapcss/tree/beta/_docs)
+
 ## API
 
 This package exports default as plugin. It uses the same style as the
@@ -59,7 +67,7 @@ This package exports default as plugin. It uses the same style as the
 Rewrite the page path
 
 ```ts
-declare const rewritePagePath: (path: string) => string | undefined;
+declare function rewritePagePath: (path: string) => string | undefined;
 ```
 
 example:
@@ -70,9 +78,8 @@ pages
 └── index.tsx
 ```
 
-aleph.config.ts
-
 ```ts
+// aleph.config.ts
 import mdx from "https://deno.land/x/aleph_plugin_mdx@$VERSION/mod.ts";
 import type { Config } from "https://deno.land/x/aleph@v0.3.0-beta.19/types.d.ts";
 export default <Config> {
@@ -90,6 +97,50 @@ output:
 ▲ SSG
   /
   /get-started
+```
+
+#### options.pageProps
+
+Define props to page components.
+
+```ts
+declare const pageProps = Record<string | number, unknown>;
+```
+
+example:
+
+```ts
+// aleph.config.ts
+import mdx from "https://deno.land/x/aleph_plugin_mdx@$VERSION/mod.ts";
+import type { Config } from "https://deno.land/x/aleph@v0.3.0-beta.19/types.d.ts";
+export default <Config> {
+  plugins: [
+    mdx({
+      pageProps: { nav: [{ path: "/" }, { path: "/docs" }] },
+    }),
+  ],
+};
+```
+
+```bash
+pages
+├── docs
+│   └── installation.mdx
+└── docs.tsx
+```
+
+```tsx
+// docs.tsx
+import type { MDXContent } from "https://esm.sh/@types/mdx/types.d.ts";
+export type DocsProps = {
+  Page?: MDXContent & { nav: { path: string }[] };
+};
+export default function Docs({ Page }: DocsProps) {
+  if (!Page) return <></>;
+
+  // Page.nav
+  return <Page />;
+}
 ```
 
 others:
