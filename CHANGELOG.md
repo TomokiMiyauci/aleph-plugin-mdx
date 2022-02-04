@@ -1,3 +1,10 @@
+# [1.0.0-beta.2](https://github.com/TomokiMiyauci/aleph-plugin-mdx/compare/v1.0.0-beta.1...v1.0.0-beta.2) (2022-02-04)
+
+
+### Features
+
+* add `rewritePagePath` interface ([565f054](https://github.com/TomokiMiyauci/aleph-plugin-mdx/commit/565f0542d86fec0a3dd464b04620bb4ce04c1405))
+
 # 1.0.0-beta.1 (2022-02-02)
 
 
