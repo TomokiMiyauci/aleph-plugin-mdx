@@ -2,6 +2,12 @@ import { Aleph, ensureTextFile, expect, join, test } from "./dev_deps.ts";
 import { mdxLoader, mdxResolver } from "./mod.ts";
 
 test("mdxResolver", () => {
+  expect(mdxResolver("/pages/index.mdx")).toEqual({
+    asPage: {
+      path: "/",
+      isIndex: true,
+    },
+  });
   expect(mdxResolver("/pages/docs/index.mdx")).toEqual({
     asPage: {
       path: "/docs",
@@ -11,6 +17,14 @@ test("mdxResolver", () => {
 
   expect(mdxResolver("/pages/docs/get-started.mdx")).toEqual({
     asPage: { path: "/docs/get-started", isIndex: false },
+  });
+
+  expect(
+    mdxResolver("/pages/get_started.mdx", {
+      rewritePath: (path) => path.replaceAll("_", "-"),
+    }),
+  ).toEqual({
+    asPage: { path: "/get-started", isIndex: false },
   });
 });
 
