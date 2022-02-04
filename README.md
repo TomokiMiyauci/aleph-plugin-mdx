@@ -53,7 +53,6 @@ use that.
 ## Examples
 
 - [_example](./_example/README.md)
-- [mapcss Docs](https://github.com/TomokiMiyauci/mapcss/tree/beta/_docs)
 
 ## API
 
