@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - beta
+      - main
     paths-ignore:
       - '_docs/**'
 
