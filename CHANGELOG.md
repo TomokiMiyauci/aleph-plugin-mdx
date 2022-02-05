@@ -1,4 +1,4 @@
-# [1.1.0-beta.1](https://github.com/TomokiMiyauci/aleph-plugin-mdx/compare/v1.0.0...v1.1.0-beta.1) (2022-02-05)
+# [1.1.0](https://github.com/TomokiMiyauci/aleph-plugin-mdx/compare/v1.0.0...v1.1.0) (2022-02-05)
 
 
 ### Features
