@@ -149,43 +149,15 @@ Passes the `@mdx-js/mdx#compile` options as is. For details, see
 
 ## Note
 
-This plugin depends on [xdm@1.6.0](https://www.npmjs.com/package/xdm/v/1.6.0).
+This plugin depends on [xdm@1.12.2](https://www.npmjs.com/package/xdm/v/1.12.2).
 
-This is the latest version of the module that can be compiled into MDX 2 and
-used with the Deno runtime.
+After `xdm@1.6.0`, it cannot be used as it is with the Deno runtime from
+Registry such as esm.sh and skypack.
 
-There is already a `3.x.x` version, but unfortunately it is not available for
-Deno. For more information, please refer to
-[Failed to import - xdm #135](https://github.com/esm-dev/esm.sh/issues/135)
+Therefore, we are intentionally adjusting the dependencies.
 
-### Known Issues
-
-xdm@1.6.0 contains the following problem.
-
-#### Multiple JSX children in “paragraph”
-
-This has been fixed in
-xdm@1.8.0.[Fix multiple JSX children in “paragraph”](https://github.com/wooorm/xdm/commit/bf69a10d1259b49e6efc81b496ff420a7a2a323c)
-
-```mdx
-# Hello
-<div>
-  <div></div>
-  <div></div>
-</div>
-```
-
-to(@jsx-runtime -> HTML)
-
-```html
-<h1>Hello</h1>
-<div>
-  <p>
-    <div></div>
-    <div></div>
-  </p>
-</div>
-```
+xdm already has a `3.x.x` version, It is not possible to follow the version any
+further by simply adjusting the version of the dependencies.
 
 ## License
 
