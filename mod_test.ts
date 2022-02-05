@@ -49,11 +49,11 @@ test("mdxLoader", async () => {
   ).resolves.toEqual({
     code: `/*@jsxRuntime automatic @jsxImportSource react*/
 import {Fragment as _Fragment, jsx as _jsx, jsxs as _jsxs} from "react/jsx-runtime";
-function MDXContent(_props) {
+function MDXContent(props) {
   const _components = Object.assign({
     h1: "h1",
     p: "p"
-  }, _props.components), {wrapper: MDXLayout} = _components;
+  }, props.components), {wrapper: MDXLayout} = _components;
   const _content = _jsxs(_Fragment, {
     children: [_jsx(_components.h1, {
       children: "aleph-plugin-mdx"
@@ -61,7 +61,7 @@ function MDXContent(_props) {
       children: "Aleph plugin for mdx v2"
     })]
   });
-  return MDXLayout ? _jsx(MDXLayout, Object.assign({}, _props, {
+  return MDXLayout ? _jsx(MDXLayout, Object.assign({}, props, {
     children: _content
   })) : _content;
 }
@@ -78,11 +78,11 @@ export default MDXContent;
   ).resolves.toEqual({
     code: `/*@jsxRuntime automatic @jsxImportSource react*/
 import {Fragment as _Fragment, jsx as _jsx, jsxs as _jsxs} from "react/jsx-runtime";
-function MDXContent(_props) {
+function MDXContent(props) {
   const _components = Object.assign({
     h1: "h1",
     p: "p"
-  }, _props.components), {wrapper: MDXLayout} = _components;
+  }, props.components), {wrapper: MDXLayout} = _components;
   const _content = _jsxs(_Fragment, {
     children: [_jsx(_components.h1, {
       children: "aleph-plugin-mdx"
@@ -90,7 +90,7 @@ function MDXContent(_props) {
       children: "Aleph plugin for mdx v2"
     })]
   });
-  return MDXLayout ? _jsx(MDXLayout, Object.assign({}, _props, {
+  return MDXLayout ? _jsx(MDXLayout, Object.assign({}, props, {
     children: _content
   })) : _content;
 }
@@ -117,11 +117,11 @@ MDXContent.nav = [{"path":"/"}];`,
   ).resolves.toEqual({
     code: `/*@jsxRuntime automatic @jsxImportSource react*/
 import {Fragment as _Fragment, jsx as _jsx, jsxs as _jsxs} from "react/jsx-runtime";
-function MDXContent(_props) {
+function MDXContent(props) {
   const _components = Object.assign({
     h1: "h1",
     p: "p"
-  }, _props.components), {wrapper: MDXLayout} = _components;
+  }, props.components), {wrapper: MDXLayout} = _components;
   const _content = _jsxs(_Fragment, {
     children: [_jsx(_components.h1, {
       children: "aleph-plugin-mdx"
@@ -129,7 +129,7 @@ function MDXContent(_props) {
       children: "Aleph plugin for mdx v2"
     })]
   });
-  return MDXLayout ? _jsx(MDXLayout, Object.assign({}, _props, {
+  return MDXLayout ? _jsx(MDXLayout, Object.assign({}, props, {
     children: _content
   })) : _content;
 }
