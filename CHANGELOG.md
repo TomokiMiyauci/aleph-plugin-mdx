@@ -1,3 +1,10 @@
+# [1.2.0-beta.1](https://github.com/TomokiMiyauci/aleph-plugin-mdx/compare/v1.1.0...v1.2.0-beta.1) (2022-02-06)
+
+
+### Features
+
+* update xdk version to `3.3.4` ([bf2f847](https://github.com/TomokiMiyauci/aleph-plugin-mdx/commit/bf2f847d7b35a176cd6ebe6e9510c36128bc61ed))
+
 # [1.1.0](https://github.com/TomokiMiyauci/aleph-plugin-mdx/compare/v1.0.0...v1.1.0) (2022-02-05)
 
 
