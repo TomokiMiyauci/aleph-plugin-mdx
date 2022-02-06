@@ -47,7 +47,7 @@ jobs:
           deno-version: ${{ matrix.deno }}
 
       - name: Test
-        run: deno test -A --ignore=node_modules,_examples --import-map=test_import_map.json --no-check
+        run: deno test -A --ignore=node_modules,_examples --import-map=test_import_map.json
 
   release:
     needs: [lint, test]
