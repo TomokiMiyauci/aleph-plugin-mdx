@@ -85,7 +85,7 @@ export async function mdxLoader(
   const { framework } = aleph.config;
   const source = new TextDecoder().decode(content);
 
-  const { contents } = await compile(source, options);
+  const { value } = await compile(source, options);
 
   if (framework !== "react") {
     throw new Error(
@@ -100,7 +100,7 @@ export async function mdxLoader(
 
   return {
     code: [
-      contents.toString(),
+      value.toString(),
       ...props,
     ].filter(Boolean).join("\n"),
   };
