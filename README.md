@@ -149,12 +149,15 @@ Passes the `@mdx-js/mdx#compile` options as is. For details, see
 
 ## Note
 
-This plugin depends on [xdm@3.3.4](https://www.npmjs.com/package/xdm/v/3.3.4).
+This plugin depends on [xdm@1.12.2](https://www.npmjs.com/package/xdm/v/1.12.2).
 
-However, the dependency of `remark-parse@10.v` will cause an error to be used
-with the Deno runtime, so `remark-parse@9.0.0` is used.
+After `xdm@1.6.0`, it cannot be used as it is with the Deno runtime from
+Registry such as esm.sh and skypack.
 
-Note that this is not the same as `xdm` with Node.js.
+Therefore, we are intentionally adjusting the dependencies.
+
+xdm already has a `3.x.x` version, It is not possible to follow the version any
+further by simply adjusting the version of the dependencies.
 
 ## License
 
