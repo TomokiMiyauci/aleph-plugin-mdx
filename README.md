@@ -149,15 +149,8 @@ Passes the `@mdx-js/mdx#compile` options as is. For details, see
 
 ## Note
 
-This plugin depends on [xdm@1.12.2](https://www.npmjs.com/package/xdm/v/1.12.2).
-
-After `xdm@1.6.0`, it cannot be used as it is with the Deno runtime from
-Registry such as esm.sh and skypack.
-
-Therefore, we are intentionally adjusting the dependencies.
-
-xdm already has a `3.x.x` version, It is not possible to follow the version any
-further by simply adjusting the version of the dependencies.
+This plugin depends on
+[@mdx-js/mdx@2.0.0](https://www.npmjs.com/package/@mdx-js/mdx/v/2.0.0).
 
 ## License
 
