@@ -1,14 +1,13 @@
 import {
   Aleph,
   compile,
+  CompileOptions,
   LoadInput,
   LoadOutput,
   Plugin,
   ResolveResult,
   util,
 } from "./deps.ts";
-
-export type CompileOptions = Parameters<typeof compile>[1];
 
 export type ResolverOptions = {
   /** Rewrite the page path
@@ -85,7 +84,7 @@ export async function mdxLoader(
   const { framework } = aleph.config;
   const source = new TextDecoder().decode(content);
 
-  const { contents } = await compile(source, options);
+  const { value } = await compile(source, options);
 
   if (framework !== "react") {
     throw new Error(
@@ -100,7 +99,7 @@ export async function mdxLoader(
 
   return {
     code: [
-      contents.toString(),
+      value.toString(),
       ...props,
     ].filter(Boolean).join("\n"),
   };
