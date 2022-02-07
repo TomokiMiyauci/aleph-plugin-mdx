@@ -1,3 +1,15 @@
+# [1.2.0](https://github.com/TomokiMiyauci/aleph-plugin-mdx/compare/v1.1.0...v1.2.0) (2022-02-07)
+
+
+### Features
+
+* update deps to use @mdx-js/mdx@2.0.0 ([2be0e61](https://github.com/TomokiMiyauci/aleph-plugin-mdx/commit/2be0e613df39ec446f9e63a3889ca788be912192))
+
+
+### Reverts
+
+* Revert "feat: update xdk version to `3.3.4`" ([b2914e5](https://github.com/TomokiMiyauci/aleph-plugin-mdx/commit/b2914e58729a9acd8c4d70c00109fd28758bdd1a))
+
 # [1.2.0-beta.3](https://github.com/TomokiMiyauci/aleph-plugin-mdx/compare/v1.2.0-beta.2...v1.2.0-beta.3) (2022-02-07)
 
 
