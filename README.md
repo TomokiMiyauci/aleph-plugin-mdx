@@ -9,7 +9,7 @@
 
 ```ts
 // aleph.config.ts
-import mdx from "https://deno.land/x/aleph_plugin_mdx@$VERSION/mod.ts";
+import { mdx } from "https://deno.land/x/aleph_plugin_mdx@$VERSION/mod.ts";
 import type { Config } from "https://deno.land/x/aleph@v0.3.0-beta.19/types.d.ts";
 
 export default <Config> {
@@ -56,10 +56,18 @@ use that.
 
 ## API
 
-This package exports default as plugin. It uses the same style as the
-[official plugin](https://alephjs.org/docs/plugins/official-plugins).
+### mdx(options)
 
-### default(options?)
+Plugin for mdx
+
+```ts
+// aleph.config.ts
+import { mdx } from "https://deno.land/x/aleph_plugin_mdx@$VERSION/mod.ts";
+import type { Config } from "https://deno.land/x/aleph@v0.3.0-beta.19/types.d.ts";
+export default <Config> {
+  plugins: [mdx()],
+};
+```
 
 #### options.rewritePagePath
 
@@ -69,7 +77,7 @@ Rewrite the page path
 declare function rewritePagePath: (path: string) => string | undefined;
 ```
 
-example:
+##### example
 
 ```bash
 pages
@@ -98,28 +106,59 @@ output:
   /get-started
 ```
 
-#### options.pageProps
+#### others
 
-Define props to page components.
+Passes the `@mdx-js/mdx#compile` options as is. For details, see
+[compile options](https://mdxjs.com/packages/mdx/#compilefile-options).
 
-```ts
-declare const pageProps = Record<string | number, unknown>;
-```
+### remarkFrontmatterProps(options?)
 
-example:
+A remark plugin to expose frontmatter to `ssrProps`. This will allow you to
+retrieve frontmatter from `pageProps`.
+
+This is useful for layout pages.
+
+This package depends on the AST output by
+[remark-frontmatter](https://github.com/remarkjs/remark-frontmatter).
 
 ```ts
 // aleph.config.ts
-import mdx from "https://deno.land/x/aleph_plugin_mdx@$VERSION/mod.ts";
+import {
+  mdx,
+  remarkFrontmatterProps,
+} from "https://deno.land/x/aleph_plugin_mdx@$VERSION/mod.ts";
+import remarkFrontmatter from "https://esm.sh/remark-frontmatter";
 import type { Config } from "https://deno.land/x/aleph@v0.3.0-beta.19/types.d.ts";
 export default <Config> {
   plugins: [
     mdx({
-      pageProps: { nav: [{ path: "/" }, { path: "/docs" }] },
+      remarkPlugins: [remarkFrontmatter, remarkFrontmatterProps],
     }),
   ],
 };
 ```
+
+```md
+// pages/docs/installation.mdx
+---
+title: Installation
+---
+```
+
+output:
+
+```js
+// .aleph/pages/docs/installation.js
+export const ssr = {
+  props: () => ({ "meta": { "title": "Installation" } }),
+};
+function MDXContent(props = {}) {
+  ...
+}
+export default MDXContent;
+```
+
+#### example
 
 ```bash
 pages
@@ -131,21 +170,57 @@ pages
 ```tsx
 // docs.tsx
 import type { MDXContent } from "https://esm.sh/@types/mdx/types.d.ts";
+
+type Meta = { title: string };
 export type DocsProps = {
-  Page?: MDXContent & { nav: { path: string }[] };
+  Page?: MDXContent;
+  pageProps: {
+    meta?: Partial<Meta>;
+  };
 };
-export default function Docs({ Page }: DocsProps) {
+export default function Docs({ Page, pageProps }: DocsProps) {
   if (!Page) return <></>;
 
-  // Page.nav
+  // pageProps.meta?.title
   return <Page />;
 }
 ```
 
-others:
+#### options.name
 
-Passes the `@mdx-js/mdx#compile` options as is. For details, see
-[compile options](https://mdxjs.com/packages/mdx/#compilefile-options).
+Define export name. The default export name is `meta`
+
+```ts
+// aleph.config.ts
+import {
+  mdx,
+  remarkFrontmatterProps,
+} from "https://deno.land/x/aleph_plugin_mdx@$VERSION/mod.ts";
+import remarkFrontmatter from "https://esm.sh/remark-frontmatter";
+import type { Config } from "https://deno.land/x/aleph@v0.3.0-beta.19/types.d.ts";
+export default <Config> {
+  plugins: [
+    mdx({
+      remarkPlugins: [remarkFrontmatter, [remarkFrontmatterProps, {
+        name: "frontmatter",
+      }]],
+    }),
+  ],
+};
+```
+
+output:
+
+```js
+// .aleph/pages/docs/installation.js
+export const ssr = {
+  props: () => ({ "frontmatter": { "title": "Installation" } }),
+};
+function MDXContent(props = {}) {
+  ...
+}
+export default MDXContent;
+```
 
 ## Note
 
