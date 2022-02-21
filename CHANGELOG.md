@@ -1,3 +1,12 @@
+# [1.3.0-beta.1](https://github.com/TomokiMiyauci/aleph-plugin-mdx/compare/v1.2.0...v1.3.0-beta.1) (2022-02-21)
+
+
+### Features
+
+* add remark plugin for expose table of contents as ssr props ([ba78d28](https://github.com/TomokiMiyauci/aleph-plugin-mdx/commit/ba78d28dc9fd8d36866db22602c6c303272fdd75))
+* add remarkFrontmatterProps plugin for export frontmatter as ssrProps ([f68af00](https://github.com/TomokiMiyauci/aleph-plugin-mdx/commit/f68af0062a4c05757d964b312f60fdbccbcd7f1c))
+* change export plugin to named export ([d0f8be1](https://github.com/TomokiMiyauci/aleph-plugin-mdx/commit/d0f8be184417601a187d17a84b76eca3ade790f0))
+
 # [1.2.0](https://github.com/TomokiMiyauci/aleph-plugin-mdx/compare/v1.1.0...v1.2.0) (2022-02-07)
 
 
