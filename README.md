@@ -222,6 +222,151 @@ function MDXContent(props = {}) {
 export default MDXContent;
 ```
 
+### remarkTocProps(options?)
+
+A remark plugin to expose table of contents to `ssrProps`.
+
+This is useful for layout pages.
+
+```ts
+// aleph.config.ts
+import {
+  mdx,
+  remarkTocProps,
+} from "https://deno.land/x/aleph_plugin_mdx@$VERSION/mod.ts";
+import type { Config } from "https://deno.land/x/aleph@v0.3.0-beta.19/types.d.ts";
+export default <Config> {
+  plugins: [
+    mdx({
+      remarkPlugins: [remarkTocProps],
+    }),
+  ],
+};
+```
+
+```md
+// pages/docs/installation.mdx
+# h1
+## h2
+### h3
+#### h4
+```
+
+output:
+
+```js
+// .aleph/pages/docs/installation.js
+export const ssr = {
+  props: () => ({
+    "tableOfContents": {
+      "items": [
+        {
+          "url": "#h1",
+          "title": "h1",
+          "items": [
+            {
+              "url": "#h2",
+              "title": "h2",
+              "items": [
+                {
+                  "url": "#h3",
+                  "title": "h3",
+                  "items": [
+                    {
+                      "url": "#h4",
+                      "title": "h4",
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+  }),
+};
+function MDXContent(props = {}) {}
+export default MDXContent;
+```
+
+#### example
+
+```bash
+pages
+├── docs
+│   └── installation.mdx
+└── docs.tsx
+```
+
+```tsx
+// docs.tsx
+import type { MDXContent } from "https://esm.sh/@types/mdx/types.d.ts";
+import type { TableOfContents } from "https://deno.land/x/aleph_plugin_mdx@$VERSION/mod.ts";
+
+type TocProps = {
+  tableOfContents?: TableOfContents;
+};
+function Toc({ tableOfContents }: TocProps) {
+  return tableOfContents?.items?.length
+    ? (
+      <ul>
+        {tableOfContents.items.map((item) => {
+          return (
+            <li key={item.title}>
+              <a href={item.url}>{item.title}</a>
+              {item.items?.length ? <Toc tableOfContents={item} /> : null}
+            </li>
+          );
+        })}
+      </ul>
+    )
+    : null;
+}
+
+export type DocsProps = {
+  Page?: MDXContent;
+  pageProps: {
+    tableOfContents?: TableOfContents;
+  };
+};
+export default function Docs({ Page, pageProps }: DocsProps) {
+  if (!Page) return <></>;
+
+  return (
+    <>
+      <Page />
+      <aside>
+        <Toc tableOfContents={pageProps.tableOfContents}>
+      </aside>
+    </>
+  );
+}
+```
+
+#### options
+
+Passes the `mdast-util-toc` options as is. For details, see
+[toc options](https://github.com/syntax-tree/mdast-util-toc#toctree-options).
+
+```ts
+// aleph.config.ts
+import {
+  mdx,
+  remarkTocProps,
+} from "https://deno.land/x/aleph_plugin_mdx@$VERSION/mod.ts";
+import type { Config } from "https://deno.land/x/aleph@v0.3.0-beta.19/types.d.ts";
+export default <Config> {
+  plugins: [
+    mdx({
+      remarkPlugins: [[remarkTocProps, {
+        maxDepth: 4,
+      }]],
+    }),
+  ],
+};
+```
+
 ## Note
 
 This plugin depends on
